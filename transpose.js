@@ -13,7 +13,7 @@ distanceHalfSteps.set(10, ['A']);
 distanceHalfSteps.set(11, ['A#','Bb']);
 distanceHalfSteps.set(12, ['B','Cb']);
 
-function transpose(origKey, finalKey, origSequence, keyType) {
+function transpose(origKey, finalKey, origSequence) {
     // get distance in half steps from start to end
     const origInd = [...distanceHalfSteps.entries()]
         .find(([key, value]) => value.includes(origKey))[0];
@@ -26,72 +26,39 @@ function transpose(origKey, finalKey, origSequence, keyType) {
     let origScale = [];
     let finalScale = [];
 
-    if (keyType.trim().toUpperCase() === 'MAJOR') {
-        // build start key scale (integer steps only)
-        // first one is easy
-        origScale.push(origKey);
-        // second is 2 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[0], 0, 2));
-        // third is 4 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[1], 0, 4));
-        // fourth is 5 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[2], 0, 5));
-        // fifth is 7 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[3], 0, 7));
-        // sixth is 9 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[4], 0, 9));
-        // seventh is 11 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[5], 0, 11));
-    
-        // build end key scale (integer steps only)
-        // first one is easy
-        finalScale.push(finalKey);
-        // second is 2 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[0], distance, 2));
-        // third is 4 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[1], distance, 4));
-        // fourth is 5 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[2], distance, 5));
-        // fifth is 7 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[3], distance, 7));
-        // sixth is 9 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[4], distance, 9));
-        // seventh is 11 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[5], distance, 11));
-    }
-    else { //assumes minor
-        // build start key scale (integer steps only)
-        // first one is easy
-        origScale.push(origKey);
-        // second is 2 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[0], 0, 2));
-        // third is 3 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[1], 0, 3));
-        // fourth is 5 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[2], 0, 5));
-        // fifth is 7 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[3], 0, 7));
-        // sixth is 8 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[4], 0, 8));
-        // seventh is 10 half steps up
-        origScale.push(calculateScaleNote(origInd, origScale[5], 0, 10));
-    
-        // build end key scale (integer steps only)
-        // first one is easy
-        finalScale.push(finalKey);
-        // second is 2 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[0], distance, 2));
-        // third is 3 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[1], distance, 3));
-        // fourth is 5 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[2], distance, 5));
-        // fifth is 7 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[3], distance, 7));
-        // sixth is 8 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[4], distance, 8));
-        // seventh is 10 half steps up
-        finalScale.push(calculateScaleNote(origInd, finalScale[5], distance, 10));
-    }
+    // we are assuming major, but if the song is in a minor key, this would still work (minor chords would just be treated as nondiatonic)
+    // build start key scale (integer steps only)
+    // first one is easy
+    origScale.push(origKey);
+    // second is 2 half steps up
+    origScale.push(calculateScaleNote(origInd, origScale[0], 0, 2));
+    // third is 4 half steps up
+    origScale.push(calculateScaleNote(origInd, origScale[1], 0, 4));
+    // fourth is 5 half steps up
+    origScale.push(calculateScaleNote(origInd, origScale[2], 0, 5));
+    // fifth is 7 half steps up
+    origScale.push(calculateScaleNote(origInd, origScale[3], 0, 7));
+    // sixth is 9 half steps up
+    origScale.push(calculateScaleNote(origInd, origScale[4], 0, 9));
+    // seventh is 11 half steps up
+    origScale.push(calculateScaleNote(origInd, origScale[5], 0, 11));
+
+    // build end key scale (integer steps only)
+    // first one is easy
+    finalScale.push(finalKey);
+    // second is 2 half steps up
+    finalScale.push(calculateScaleNote(origInd, finalScale[0], distance, 2));
+    // third is 4 half steps up
+    finalScale.push(calculateScaleNote(origInd, finalScale[1], distance, 4));
+    // fourth is 5 half steps up
+    finalScale.push(calculateScaleNote(origInd, finalScale[2], distance, 5));
+    // fifth is 7 half steps up
+    finalScale.push(calculateScaleNote(origInd, finalScale[3], distance, 7));
+    // sixth is 9 half steps up
+    finalScale.push(calculateScaleNote(origInd, finalScale[4], distance, 9));
+    // seventh is 11 half steps up
+    finalScale.push(calculateScaleNote(origInd, finalScale[5], distance, 11));
+
     console.log('final scale: ' + finalScale);
 
     // populate the final sequence of chords
@@ -194,5 +161,5 @@ function calculateScaleNote(origInd, previousNote, distance, interval) {
     }
 }
 
-transpose('D','G',['D','A','B','G','C','G','A','F','Eb','Bb','C','Ab','E','B','C#','A'],'major');
+transpose('D','G',['D','A','B','G','C','G','A','F','Eb','Bb','C','Ab','E','B','C#','A']);
         
